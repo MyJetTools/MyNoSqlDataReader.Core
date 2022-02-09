@@ -38,7 +38,7 @@ public class TestDbUpdateOperations
         Assert.AreEqual(true, source.ContainsKey("PK"));
 
 
-        Assert.AreEqual(timeStamp, source["PK"].TryGetRow("RK1"));
+        Assert.AreEqual(timeStamp, source["PK"].TryGetRow("RK1").TimeStamp);
         Assert.AreEqual(timeStamp, source["PK"].TryGetRow("RK2").TimeStamp);
     }
 

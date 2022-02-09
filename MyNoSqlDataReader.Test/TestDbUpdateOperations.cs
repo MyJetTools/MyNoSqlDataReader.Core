@@ -37,7 +37,8 @@ public class TestDbUpdateOperations
         Assert.AreEqual(1, source.Count);
         Assert.AreEqual(true, source.ContainsKey("PK"));
 
-        Assert.AreEqual(timeStamp, source["PK"].TryGetRow("RK1").TimeStamp);
+
+        Assert.AreEqual(timeStamp, source["PK"].TryGetRow("RK1"));
         Assert.AreEqual(timeStamp, source["PK"].TryGetRow("RK2").TimeStamp);
     }
 
@@ -124,29 +125,29 @@ public class TestDbUpdateOperations
 
 
         var timeStamp = DateTime.UtcNow;
-        
+
         var dbPartition = new DbPartition<TestEntity>("PK");
-        
-        
+
+
         dbPartition.InsertOrReplace(new TestEntity
         {
             PartitionKey = "PK",
             RowKey = "RK1",
             TimeStamp = timeStamp
         });
-        
+
         dbPartition.InsertOrReplace(new TestEntity
         {
             PartitionKey = "PK",
             RowKey = "RK2",
             TimeStamp = timeStamp
         });
-        
+
         source.Add("PK", dbPartition);
 
         var rowsToDelete = new Dictionary<string, List<string>>
         {
-            ["PK"] = new() {"RK2"}
+            ["PK"] = new() { "RK2" }
         };
 
         DbUpdateOperations.DeleteRows(source, rowsToDelete, null);

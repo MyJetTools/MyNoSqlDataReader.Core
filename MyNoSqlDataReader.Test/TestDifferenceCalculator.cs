@@ -8,7 +8,7 @@ namespace MyNoSqlDataReader.Test;
 
 public class TestEntity : MyNoSqlEntity
 {
-    
+
 }
 
 public class TestDifferenceCalculator
@@ -19,7 +19,7 @@ public class TestDifferenceCalculator
     {
 
         var before = new SortedDictionary<string, TestEntity>();
-        
+
         var after = new SortedDictionary<string, TestEntity>
         {
             ["RK1"] = new()
@@ -31,17 +31,18 @@ public class TestDifferenceCalculator
         };
 
         var difference = before.CalculateDifference(after);
-        
+
         Assert.IsNull(difference.Deleted);
         Assert.IsNotNull(difference.Updated);
         Assert.AreEqual(1, difference.Updated.Count);
     }
-    
+
     [Test]
     public void TestDeletedRecords()
     {
 
-        var before = new SortedDictionary<string, TestEntity>{
+        var before = new SortedDictionary<string, TestEntity>
+        {
             ["RK1"] = new()
             {
                 PartitionKey = "PK",
@@ -54,18 +55,19 @@ public class TestDifferenceCalculator
         ;
 
         var difference = before.CalculateDifference(after);
-        
+
         Assert.IsNull(difference.Updated);
         Assert.IsNotNull(difference.Deleted);
         Assert.AreEqual(1, difference.Deleted.Count);
     }
-    
+
     [Test]
     public void TestNothingChanged()
     {
 
         var timeStamp = DateTime.UtcNow;
-        var before = new SortedDictionary<string, TestEntity>{
+        var before = new SortedDictionary<string, TestEntity>
+        {
             ["RK1"] = new()
             {
                 PartitionKey = "PK",
@@ -74,7 +76,8 @@ public class TestDifferenceCalculator
             }
         };
 
-        var after = new SortedDictionary<string, TestEntity>{
+        var after = new SortedDictionary<string, TestEntity>
+        {
             ["RK1"] = new()
             {
                 PartitionKey = "PK",
@@ -85,19 +88,20 @@ public class TestDifferenceCalculator
         ;
 
         var difference = before.CalculateDifference(after);
-        
+
         Assert.IsNull(difference.Updated);
         Assert.IsNull(difference.Deleted);
     }
-    
-    
+
+
     [Test]
     public void TestRecordUpdated()
     {
 
         var beforeTimeStamp = DateTime.UtcNow;
         var afterTimeStamp = beforeTimeStamp.AddDays(1);
-        var before = new SortedDictionary<string, TestEntity>{
+        var before = new SortedDictionary<string, TestEntity>
+        {
             ["RK1"] = new()
             {
                 PartitionKey = "PK",
@@ -106,7 +110,8 @@ public class TestDifferenceCalculator
             }
         };
 
-        var after = new SortedDictionary<string, TestEntity>{
+        var after = new SortedDictionary<string, TestEntity>
+        {
             ["RK1"] = new()
             {
                 PartitionKey = "PK",
@@ -117,11 +122,11 @@ public class TestDifferenceCalculator
         ;
 
         var difference = before.CalculateDifference(after);
-        
+
         Assert.IsNull(difference.Deleted);
         Assert.IsNotNull(difference.Updated);
         Assert.AreEqual(1, difference.Updated.Count);
         Assert.AreEqual(afterTimeStamp, difference.Updated[0].TimeStamp);
     }
-    
+
 }

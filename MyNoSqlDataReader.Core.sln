@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNoSqlDataReader.Core", "MyNoSqlDataReader.Core\MyNoSqlDataReader.Core.csproj", "{82FC1905-4DCC-40FB-A02F-3BBD2EB3ECCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNoSqlDataReader.Test", "MyNoSqlDataReader.Test\MyNoSqlDataReader.Test.csproj", "{C66A3F90-44C8-4078-A367-985895196110}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{82FC1905-4DCC-40FB-A02F-3BBD2EB3ECCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82FC1905-4DCC-40FB-A02F-3BBD2EB3ECCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82FC1905-4DCC-40FB-A02F-3BBD2EB3ECCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82FC1905-4DCC-40FB-A02F-3BBD2EB3ECCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C66A3F90-44C8-4078-A367-985895196110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C66A3F90-44C8-4078-A367-985895196110}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C66A3F90-44C8-4078-A367-985895196110}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C66A3F90-44C8-4078-A367-985895196110}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -57,35 +57,35 @@ public class MyNoSqlDataReader<TDbRow> : IMyNoSqlDataReader where TDbRow: IMyNoS
         });
     }
     
-    private void HandleInitPartition(InitPartitionSyncEvent<TDbRow> partitionsToSync)
+    private void HandleInitPartition(InitPartitionSyncEvent<TDbRow> initPartitionsToSync)
     {
         _dbTable.GetWriteAccess(writeAccess =>
         {
             var tableDictionary = writeAccess.GetWriteAccess();
-            DbUpdateOperations.PartitionsUpdate(tableDictionary, partitionsToSync.UpdatedPartitions, _callback);
+            DbUpdateOperations.PartitionsUpdate(tableDictionary, initPartitionsToSync.UpdatedPartitions, _callback);
         });
     }
     
     
-    private void HandleUpdateRows(UpdateRowsSyncEvent<TDbRow> initTableSyncEvent)
+    private void HandleUpdateRows(UpdateRowsSyncEvent<TDbRow> updateRowsSyncEvent)
     {
         _dbTable.GetWriteAccess(writeAccess =>
         {
-            DbUpdateOperations.UpdateRows(writeAccess.GetWriteAccess(), initTableSyncEvent.ChangedRows);
+            DbUpdateOperations.UpdateRows(writeAccess.GetWriteAccess(), updateRowsSyncEvent.ChangedRows);
             
             if (_callback != null)
             {
-                var difference = RowsUpdates<TDbRow>.CreateAsUpdated(initTableSyncEvent.ChangedRows);
+                var difference = RowsUpdates<TDbRow>.CreateAsUpdated(updateRowsSyncEvent.ChangedRows);
                 _callback?.Invoke(difference);
             }
         });
     }    
     
-    private void HandleDeleteRows(DeleteRowsSyncEvent<TDbRow> initTableSyncEvent)
+    private void HandleDeleteRows(DeleteRowsSyncEvent deleteRowsSyncEvent)
     {
         _dbTable.GetWriteAccess(writeAccess =>
         {
-            DbUpdateOperations.DeleteRows(writeAccess.GetWriteAccess(), initTableSyncEvent.DeletedRows, _callback);
+            DbUpdateOperations.DeleteRows(writeAccess.GetWriteAccess(), deleteRowsSyncEvent.DeletedRows, _callback);
         });
     }
 

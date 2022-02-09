@@ -23,16 +23,25 @@ public class DbPartition<TDbRow> where TDbRow : IMyNoSqlEntity, new()
         return _dbRows.TryGetValue(rowKey, out var result) ? result : default;
     }
 
-    public TDbRow? InsertOrReplace(TDbRow dbRow)
+    public void InsertOrReplace(TDbRow dbRow)
     {
-        if (_dbRows.Remove(dbRow.RowKey, out var removed))
+        if (_dbRows.TryGetValue(dbRow.RowKey, out var current))
         {
-            _dbRows.Add(dbRow.RowKey, dbRow);
-            return removed;
+            if (current.TimeStamp<dbRow.TimeStamp)
+            {
+                if (_dbRows.Remove(dbRow.RowKey))
+                {
+                    _dbRows.Add(dbRow.RowKey, dbRow);
+                    return;
+                }
+            }
+            else
+            {
+                return;
+            }
         }
         
         _dbRows.Add(dbRow.RowKey, dbRow);
-        return default;
     }
     
     public void BulkInsertOrReplace(IEnumerable<TDbRow> dbRows)

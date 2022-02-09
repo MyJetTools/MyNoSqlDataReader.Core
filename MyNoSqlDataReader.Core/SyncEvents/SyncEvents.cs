@@ -17,7 +17,6 @@ public class InitTableSyncEvent<TDbRow>  where TDbRow: IMyNoSqlEntity, new()
 public class InitPartitionSyncEvent<TDbRow>  where TDbRow: IMyNoSqlEntity, new()
 {
     public Dictionary<string, DbPartition<TDbRow>> UpdatedPartitions { get; }
-    
     private InitPartitionSyncEvent(Dictionary<string, DbPartition<TDbRow>> updatedPartitions)
     {
         UpdatedPartitions = updatedPartitions;
@@ -28,7 +27,6 @@ public class InitPartitionSyncEvent<TDbRow>  where TDbRow: IMyNoSqlEntity, new()
 public class UpdateRowsSyncEvent<TDbRow>  where TDbRow: IMyNoSqlEntity, new()
 {
     public List<TDbRow> ChangedRows { get;  }
-    
     private UpdateRowsSyncEvent(List<TDbRow> changedRows)
     {
         ChangedRows = changedRows;
@@ -36,7 +34,7 @@ public class UpdateRowsSyncEvent<TDbRow>  where TDbRow: IMyNoSqlEntity, new()
  
 }
 
-public class DeleteRowsSyncEvent<TDbRow> where TDbRow: IMyNoSqlEntity, new()
+public class DeleteRowsSyncEvent
 {
     public Dictionary<string, List<string>> DeletedRows { get;  }
     
@@ -51,5 +49,5 @@ public interface IInitTableSyncEvents<TDbRow> where TDbRow : IMyNoSqlEntity, new
     InitTableSyncEvent<TDbRow> ParseInitTable(SyncContract syncContract);
     InitPartitionSyncEvent<TDbRow> ParseInitPartitions(SyncContract syncContract);
     UpdateRowsSyncEvent<TDbRow> ParseUpdateRows(SyncContract syncContract);
-    DeleteRowsSyncEvent<TDbRow> ParseDeleteRows(SyncContract syncContract);
+    DeleteRowsSyncEvent ParseDeleteRows(SyncContract syncContract);
 }

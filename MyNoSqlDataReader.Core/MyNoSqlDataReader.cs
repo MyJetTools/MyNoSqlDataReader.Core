@@ -6,37 +6,35 @@ namespace MyNoSqlDataReader.Core;
 
 public class MyNoSqlDataReader<TDbRow> : IMyNoSqlDataReader where TDbRow: IMyNoSqlEntity, new()
 {
-    private readonly IInitTableSyncEvents<TDbRow> _initTableSyncEvents;
     private readonly DbTable<TDbRow> _dbTable;
 
-    public MyNoSqlDataReader(string name, IInitTableSyncEvents<TDbRow> initTableSyncEvents)
+    public MyNoSqlDataReader(string name)
     {
-        _initTableSyncEvents = initTableSyncEvents;
         _dbTable =  new DbTable<TDbRow>(name);
     }
 
-    void IMyNoSqlDataReader.UpdateData(SyncContract syncContract)
+    void IMyNoSqlDataReader.UpdateData(ISyncEvent syncContract)
     {
-        switch (syncContract.SyncEventType)
+        switch (syncContract)
         {
-            case SyncEventType.InitTable:
-                HandleInitTable(_initTableSyncEvents.ParseInitTable(syncContract));
+            case InitTableSyncEvent<TDbRow> initTableSyncContract:
+                HandleInitTable(initTableSyncContract);
                 return;
             
-            case SyncEventType.InitPartitions:
-                HandleInitPartition(_initTableSyncEvents.ParseInitPartitions(syncContract));
+            case InitPartitionsSyncEvent<TDbRow> initPartitionSyncContract:
+                HandleInitPartition(initPartitionSyncContract);
                 return;
             
-            case SyncEventType.UpdateRows:
-                HandleUpdateRows(_initTableSyncEvents.ParseUpdateRows(syncContract));
+            case UpdateRowsSyncEvent<TDbRow> updateRowsSyncEvent:
+                HandleUpdateRows(updateRowsSyncEvent);
                 return;
             
-            case SyncEventType.DeleteRows:
-                HandleDeleteRows(_initTableSyncEvents.ParseDeleteRows(syncContract));
+            case DeleteRowsSyncEvent deleteRowsSyncEvent:
+                HandleDeleteRows(deleteRowsSyncEvent);
                 return;
         }
 
-        throw new Exception($"Unknown event type {syncContract.SyncEventType}");
+        throw new Exception($"Unknown event type {syncContract.GetType()}");
     }
 
 
@@ -53,16 +51,16 @@ public class MyNoSqlDataReader<TDbRow> : IMyNoSqlDataReader where TDbRow: IMyNoS
         _dbTable.GetWriteAccess(writeAccess =>
         {
             var tableDictionary = writeAccess.GetWriteAccess();
-            DbUpdateOperations.InitTable(tableDictionary, initTableSyncEvent.Partitions, _callback);
+            DbUpdateOperations.InitTable(tableDictionary, initTableSyncEvent.Records, _callback);
         });
     }
     
-    private void HandleInitPartition(InitPartitionSyncEvent<TDbRow> initPartitionsToSync)
+    private void HandleInitPartition(InitPartitionsSyncEvent<TDbRow> initPartitionsToSync)
     {
         _dbTable.GetWriteAccess(writeAccess =>
         {
             var tableDictionary = writeAccess.GetWriteAccess();
-            DbUpdateOperations.PartitionsUpdate(tableDictionary, initPartitionsToSync.UpdatedPartitions, _callback);
+            DbUpdateOperations.PartitionsUpdate(tableDictionary, initPartitionsToSync.Records, _callback);
         });
     }
     
@@ -71,11 +69,11 @@ public class MyNoSqlDataReader<TDbRow> : IMyNoSqlDataReader where TDbRow: IMyNoS
     {
         _dbTable.GetWriteAccess(writeAccess =>
         {
-            DbUpdateOperations.UpdateRows(writeAccess.GetWriteAccess(), updateRowsSyncEvent.ChangedRows);
+            DbUpdateOperations.UpdateRows(writeAccess.GetWriteAccess(), updateRowsSyncEvent.UpdatedRows);
             
             if (_callback != null)
             {
-                var difference = RowsUpdates<TDbRow>.CreateAsUpdated(updateRowsSyncEvent.ChangedRows);
+                var difference = RowsUpdates<TDbRow>.CreateAsUpdated(updateRowsSyncEvent.UpdatedRows);
                 _callback?.Invoke(difference);
             }
         });

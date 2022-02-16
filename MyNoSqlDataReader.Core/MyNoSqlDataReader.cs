@@ -28,6 +28,7 @@ public class MyNoSqlDataReader<TDbRow> : IMyNoSqlDataReader where TDbRow: IMyNoS
                 {
                     _setInitialized = true;
                     _initialized.SetResult();
+                    Console.WriteLine($"DataReader Table {syncContract.TableName} is initialized");
                 }
                 HandleInitTable(_initTableSyncEvents.ParseInitTable(syncContract));
                 return;

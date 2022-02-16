@@ -9,6 +9,10 @@ public class MyNoSqlDataReader<TDbRow> : IMyNoSqlDataReader where TDbRow: IMyNoS
     private readonly IInitTableSyncEvents<TDbRow> _initTableSyncEvents;
     private readonly DbTable<TDbRow> _dbTable;
 
+    private bool _setInitialized;
+    private readonly TaskCompletionSource _initialized = new ();
+    public Task AwaitInitialized => _initialized.Task;
+
     public MyNoSqlDataReader(string name, IInitTableSyncEvents<TDbRow> initTableSyncEvents)
     {
         _initTableSyncEvents = initTableSyncEvents;
@@ -20,6 +24,11 @@ public class MyNoSqlDataReader<TDbRow> : IMyNoSqlDataReader where TDbRow: IMyNoS
         switch (syncContract.SyncEventType)
         {
             case SyncEventType.InitTable:
+                if (!_setInitialized)
+                {
+                    _setInitialized = true;
+                    _initialized.SetResult();
+                }
                 HandleInitTable(_initTableSyncEvents.ParseInitTable(syncContract));
                 return;
             
@@ -88,7 +97,6 @@ public class MyNoSqlDataReader<TDbRow> : IMyNoSqlDataReader where TDbRow: IMyNoS
             DbUpdateOperations.DeleteRows(writeAccess.GetWriteAccess(), deleteRowsSyncEvent.DeletedRows, _callback);
         });
     }
-
 
     public int Count
     {

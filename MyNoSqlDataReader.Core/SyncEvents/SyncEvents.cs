@@ -4,7 +4,7 @@ using MyNoSqlServer.Abstractions;
 namespace MyNoSqlDataReader.Core.SyncEvents;
 
 
-public class InitTableSyncEvent<TDbRow> where TDbRow : IMyNoSqlDbEntity, new()
+public class InitTableSyncEvent<TDbRow> where TDbRow : IMyNoSqlEntity, new()
 {
     public SortedDictionary<String, DbPartition<TDbRow>> Partitions { get; }
 
@@ -14,7 +14,7 @@ public class InitTableSyncEvent<TDbRow> where TDbRow : IMyNoSqlDbEntity, new()
     }
 }
 
-public class InitPartitionSyncEvent<TDbRow> where TDbRow : IMyNoSqlDbEntity, new()
+public class InitPartitionSyncEvent<TDbRow> where TDbRow : IMyNoSqlEntity, new()
 {
     public Dictionary<string, DbPartition<TDbRow>> UpdatedPartitions { get; }
     public InitPartitionSyncEvent(Dictionary<string, DbPartition<TDbRow>> updatedPartitions)
@@ -24,7 +24,7 @@ public class InitPartitionSyncEvent<TDbRow> where TDbRow : IMyNoSqlDbEntity, new
 
 }
 
-public class UpdateRowsSyncEvent<TDbRow> where TDbRow : IMyNoSqlDbEntity, new()
+public class UpdateRowsSyncEvent<TDbRow> where TDbRow : IMyNoSqlEntity, new()
 {
     public List<TDbRow> ChangedRows { get; }
     public UpdateRowsSyncEvent(List<TDbRow> changedRows)
@@ -44,7 +44,7 @@ public class DeleteRowsSyncEvent
     }
 }
 
-public interface IInitTableSyncEvents<TDbRow> where TDbRow : IMyNoSqlDbEntity, new()
+public interface IInitTableSyncEvents<TDbRow> where TDbRow : IMyNoSqlEntity, new()
 {
     InitTableSyncEvent<TDbRow> ParseInitTable(SyncContract syncContract);
     InitPartitionSyncEvent<TDbRow> ParseInitPartitions(SyncContract syncContract);

@@ -2,7 +2,7 @@
 
 namespace MyNoSqlDataReader.Core.Db;
 
-public class DbPartition<TDbRow> where TDbRow : IMyNoSqlDbEntity, new()
+public class DbPartition<TDbRow> where TDbRow : IMyNoSqlEntity, new()
 {
     public string PartitionKey { get; }
     

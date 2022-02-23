@@ -4,7 +4,7 @@ using MyNoSqlServer.Abstractions;
 
 namespace MyNoSqlDataReader.Core;
 
-public class MyNoSqlDataReader<TDbRow> : IMyNoSqlDataReader where TDbRow: IMyNoSqlDbEntity, new()
+public class MyNoSqlDataReader<TDbRow> : IMyNoSqlDataReader where TDbRow: IMyNoSqlEntity, new()
 {
     private readonly IInitTableSyncEvents<TDbRow> _initTableSyncEvents;
     private readonly DbTable<TDbRow> _dbTable;

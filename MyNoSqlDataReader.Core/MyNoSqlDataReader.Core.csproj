@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MyNoSqlServer.Abstractions" Version="1.0.5" />
+      <PackageReference Include="MyNoSqlServer.Abstractions" Version="1.2.2" />
     </ItemGroup>
 
 </Project>

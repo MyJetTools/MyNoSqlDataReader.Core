@@ -3,7 +3,7 @@ using MyNoSqlServer.Abstractions;
 namespace MyNoSqlDataReader.Core.Db;
 
 
-public class RowsUpdates<TDbRow> where TDbRow : IMyNoSqlEntity, new()
+public class RowsUpdates<TDbRow> where TDbRow : IMyNoSqlDbEntity, new()
 {
     public List<TDbRow>? Updated { get; private set; }
     public List<TDbRow>? Deleted { get; private set; }
@@ -41,7 +41,7 @@ public class RowsUpdates<TDbRow> where TDbRow : IMyNoSqlEntity, new()
 public static class DbPartitionDifferenceCalculator
 {
     public static RowsUpdates<TDbRow> CalculateDifference<TDbRow>(this IReadOnlyDictionary<string, TDbRow> before, 
-        IReadOnlyDictionary<string, TDbRow> after) where TDbRow : IMyNoSqlEntity, new()
+        IReadOnlyDictionary<string, TDbRow> after) where TDbRow : IMyNoSqlDbEntity, new()
     {
 
         var result = new RowsUpdates<TDbRow>();

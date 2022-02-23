@@ -3,17 +3,17 @@ using MyNoSqlServer.Abstractions;
 namespace MyNoSqlDataReader.Core.Db;
 
 
-public interface IDbTableReadAccess<TDbRow> where TDbRow: IMyNoSqlEntity, new()
+public interface IDbTableReadAccess<TDbRow> where TDbRow: IMyNoSqlDbEntity, new()
 {
     IReadOnlyDictionary<String, DbPartition<TDbRow>> GetReadAccess();
 }
 
-public interface IDbTableWriteAccess<TDbRow> where TDbRow: IMyNoSqlEntity, new()
+public interface IDbTableWriteAccess<TDbRow> where TDbRow: IMyNoSqlDbEntity, new()
 {
     SortedDictionary<String, DbPartition<TDbRow>> GetWriteAccess();
 }
 
-public class DbTable<TDbRow> :  IDbTableReadAccess<TDbRow>, IDbTableWriteAccess<TDbRow> where TDbRow: IMyNoSqlEntity, new()
+public class DbTable<TDbRow> :  IDbTableReadAccess<TDbRow>, IDbTableWriteAccess<TDbRow> where TDbRow: IMyNoSqlDbEntity, new()
 {
     public string Name { get; }
 

@@ -5,7 +5,7 @@ namespace MyNoSqlDataReader.Core.Db;
 public static class DbUpdateOperations
 {
     public static void UpdateRows<TDbRow>(IDictionary<string, DbPartition<TDbRow>> tablePartitions,
-        List<TDbRow> updatedRows) where TDbRow : IMyNoSqlEntity, new()
+        List<TDbRow> updatedRows) where TDbRow : IMyNoSqlDbEntity, new()
     {
         foreach (var dbRow in updatedRows)
         {
@@ -19,7 +19,7 @@ public static class DbUpdateOperations
     }
 
     public static void DeleteRows<TDbRow>(IDictionary<string, DbPartition<TDbRow>> tablePartitions,
-        Dictionary<string, List<string>> deletedRows, Action<RowsUpdates<TDbRow>>? callback) where TDbRow : IMyNoSqlEntity, new()
+        Dictionary<string, List<string>> deletedRows, Action<RowsUpdates<TDbRow>>? callback) where TDbRow : IMyNoSqlDbEntity, new()
     {
 
         List<TDbRow>? deletedRowsToCallback = null; 
@@ -49,7 +49,7 @@ public static class DbUpdateOperations
     }
     
     public static void PartitionsUpdate<TDbRow>(IDictionary<string, DbPartition<TDbRow>> tableDictionary, 
-        IReadOnlyDictionary<string, DbPartition<TDbRow>> newPartitionsSet, Action<RowsUpdates<TDbRow>>? callback) where TDbRow : IMyNoSqlEntity, new()
+        IReadOnlyDictionary<string, DbPartition<TDbRow>> newPartitionsSet, Action<RowsUpdates<TDbRow>>? callback) where TDbRow : IMyNoSqlDbEntity, new()
     {
 
         foreach (var (partitionKey, newPartition) in newPartitionsSet)
@@ -78,7 +78,7 @@ public static class DbUpdateOperations
 
     public static void InitTable<TDbRow>(IDictionary<string, DbPartition<TDbRow>> tableDictionary,
         IReadOnlyDictionary<string, DbPartition<TDbRow>> newPartitionsSet, Action<RowsUpdates<TDbRow>>? callback)
-        where TDbRow : IMyNoSqlEntity, new()
+        where TDbRow : IMyNoSqlDbEntity, new()
     {
 
         PartitionsUpdate(tableDictionary, newPartitionsSet, callback);

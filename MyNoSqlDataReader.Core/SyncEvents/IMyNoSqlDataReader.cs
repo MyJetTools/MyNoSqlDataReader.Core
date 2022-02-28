@@ -1,6 +1,6 @@
 namespace MyNoSqlDataReader.Core.SyncEvents;
 
-public interface IMyNoSqlDataReader
+public interface IMyNoSqlDataReaderEventUpdater
 {
     void UpdateData(SyncContract syncContract);
 }

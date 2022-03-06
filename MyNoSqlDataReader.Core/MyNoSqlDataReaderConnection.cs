@@ -9,7 +9,9 @@ public abstract class MyNoSqlDataReaderConnection
     private readonly Dictionary<string, IMyNoSqlDataReaderEventUpdater> _subscribers = new();
 
     public readonly Logger Logger = new Logger();
-    
+    protected IEnumerable<string> SubscribedTables => _subscribers.Keys;
+    protected int SubscribersCount => _subscribers.Count;
+
     public async Task WaitAllTablesAreInitialized()
     {
         foreach (var (id, subscriber) in _subscribers)

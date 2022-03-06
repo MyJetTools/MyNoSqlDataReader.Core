@@ -14,10 +14,10 @@ public abstract class MyNoSqlDataReaderConnection
     {
         foreach (var (id, subscriber) in _subscribers)
         {
-            Logger.WriteInfoLog($"Waiting for table [{id}] is initialized....");
+            Logger.Write(Logger.LogItem.Create(Logger.LogLevel.Info, "WaitAllTablesAreInitialized", $"Waiting for table [{id}] is initialized....", null));
             Console.WriteLine($"Waiting for table [{id}] being initialized....");
             await subscriber.IsInitialized();
-            Logger.WriteInfoLog($"Table [{id}] is initialized!!!!!");
+            Logger.Write(Logger.LogItem.Create(Logger.LogLevel.Info, "WaitAllTablesAreInitialized", $"Table [{id}] is initialized!!!!!", null));
             Console.WriteLine($"Table [{id}] is initialized!!!!!");
             
         }
@@ -31,9 +31,8 @@ public abstract class MyNoSqlDataReaderConnection
         }
         else
         {
-            Logger.WriteInfoLog($"Somehow we are having packet for the table [{syncContract.TableName}] which we are not subscribed");
+            Logger.Write(Logger.LogItem.Create(Logger.LogLevel.Error, "HandleIncomingPacket", $"Somehow we are having packet for the table [{syncContract.TableName}] which we are not subscribed", null));
         }
-            
     }
 
     protected abstract IInitTableSyncEvents<TDbRow> CreateInitTableSyncEvents<TDbRow>()

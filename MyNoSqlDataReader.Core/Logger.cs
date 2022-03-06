@@ -29,29 +29,19 @@ public class Logger
     
     private Action<LogItem>? _logCallback;
     
-    public void WriteInfoLog(string message)
+    public void Write(LogItem item)
     {
         if (_logCallback == null)
         {
-            Console.WriteLine("MyNoSqlDataReader Info: " + message);
+            Console.WriteLine("==== Socket Log Record =====");
+            Console.WriteLine($"DateTime: {item.DateTime:s}");
+            Console.WriteLine($"Level: Info: {item.Level}");
+            Console.WriteLine($"Process: {item.Process}");
+            Console.WriteLine($"Message: {item.Message}");
         }
         else
         {
-            _logCallback(LogItem.Create(LogLevel.Info, "MyNoSqlTcpDataReader", message, null));
-        }
-        
-    }
-    
-    public void WriteErrorLog(Exception e)
-    {
-        if (_logCallback == null)
-        {
-            Console.WriteLine("MyNoSqlDataReader Error: " + e.Message);
-            Console.WriteLine(e);
-        }
-        else
-        {
-            _logCallback(LogItem.Create(LogLevel.Error, "MyNoSqlTcpDataReader", e.Message, e));
+            _logCallback(item);
         }
     }
     
